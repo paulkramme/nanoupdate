@@ -30,5 +30,5 @@ func main() {
 		panic(jsonerr)
 	}
 
-	fmt.Println(ver.Patch)
+	fmt.Printf("%s %d.%d.%d\n", ver.Name, ver.Major, ver.Minor, ver.Patch)
 }

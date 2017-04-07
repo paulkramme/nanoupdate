@@ -4,17 +4,31 @@ import "fmt"
 import "encoding/json"
 import "io/ioutil"
 
-func main()  {
-	fmt.Println("NANOUPDATE")
+type version struct {
+	Name string
+	Major int
+	Minor int
+	Patch int
+	Base_download string
+}
+
+func fromjson(src string, v interface{}) error {
+	return json.Unmarshal([]byte(src), v)
+}
+
+func main() {
 	config, err := ioutil.ReadFile("./config.json")
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(string(config))
 
-	var config_data map[string]interface{}
+	var ver version
 
-	if err := json.Unmarshal(config, &config_data); err != nil {
-		panic(err)
+	jsonerr := fromjson(string(config), &ver)
+	if jsonerr != nil {
+		panic(jsonerr)
 	}
-	fmt.Println(config_data)
+
+	fmt.Println(ver.Patch)
 }

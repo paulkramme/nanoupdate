@@ -16,9 +16,8 @@ func fromjson(src string, v interface{}) error {
 	return json.Unmarshal([]byte(src), v)
 }
 
-func (v version) info() int {
+func (v version) info() {
 	fmt.Printf("Name: %s\nVersion: %d.%d.%d\nServer: %s\n", v.Name, v.Major, v.Minor, v.Patch, v.Base_download)
-	return 0
 }
 
 func main() {

@@ -1,0 +1,9 @@
+IDEAS:
+
+- checks json string with on server
+	- json includes newest version + download link (+ changelog)
+	if current version equal newest version:
+		notify user that version is newest
+	else
+		download and replace binary of application with paths from config
+

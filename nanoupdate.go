@@ -16,6 +16,11 @@ func fromjson(src string, v interface{}) error {
 	return json.Unmarshal([]byte(src), v)
 }
 
+func (v version) info() int {
+	fmt.Printf("Name: %s\nVersion: %d.%d.%d\nServer: %s\n", v.Name, v.Major, v.Minor, v.Patch, v.Base_download)
+	return 0
+}
+
 func main() {
 	config, err := ioutil.ReadFile("./config.json")
 	if err != nil {
@@ -26,6 +31,5 @@ func main() {
 	if jsonerr != nil {
 		panic(jsonerr)
 	}
-	fmt.Printf("%s %d.%d.%d\n", ver.Name, ver.Major, ver.Minor, ver.Patch)
-	fmt.Printf("Searching update on %s\n", ver.Base_download)
+	ver.info()
 }

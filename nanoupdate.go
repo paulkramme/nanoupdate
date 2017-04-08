@@ -21,14 +21,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(config))
-
 	var ver version
-
 	jsonerr := fromjson(string(config), &ver)
 	if jsonerr != nil {
 		panic(jsonerr)
 	}
-
 	fmt.Printf("%s %d.%d.%d\n", ver.Name, ver.Major, ver.Minor, ver.Patch)
+	fmt.Printf("Searching update on %s\n", ver.Base_download)
 }

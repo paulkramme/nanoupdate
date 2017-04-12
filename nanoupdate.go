@@ -2,7 +2,10 @@ package main
 
 import "fmt"
 import "encoding/json"
+import "io"
 import "io/ioutil"
+import "os"
+import "net/http"
 
 type version struct {
 	Name string
@@ -10,10 +13,31 @@ type version struct {
 	Minor int
 	Patch int
 	Base_download string
+	Bin_location string
+	Conf_location string
+	Httptype string
 }
 
 func fromjson(src string, v interface{}) error {
 	return json.Unmarshal([]byte(src), v)
+}
+
+func download(link string, path string) (err error) {
+	out,err := os.Create(path)
+	if err != nil {
+		panic(err)
+	}
+	defer out.Close()
+	resp,err := http.Get(link)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	_,err = io.Copy(out, resp.Body)
+	if err != nil {
+		panic(err)
+	}
+	return
 }
 
 func (v version) info() {
@@ -31,4 +55,7 @@ func main() {
 		panic(err)
 	}
 	ver.info()
+	link := fmt.Sprintf("%s://%s/%d_%d/latest/%s*", ver.Httptype, ver.Base_download, ver.Major, ver.Minor, ver.Name)
+	fmt.Println(link)
 }
+

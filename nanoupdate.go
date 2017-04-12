@@ -26,9 +26,9 @@ func main() {
 		panic(err)
 	}
 	var ver version
-	jsonerr := fromjson(string(config), &ver)
-	if jsonerr != nil {
-		panic(jsonerr)
+	err = fromjson(string(config), &ver)
+	if err != nil {
+		panic(err)
 	}
 	ver.info()
 }

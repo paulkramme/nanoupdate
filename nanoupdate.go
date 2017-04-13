@@ -18,6 +18,18 @@ type version struct {
 	Httptype string
 }
 
+type latest_ver_srvr_resp struct {
+	Major int
+	Minor int
+	Patch int
+	Dl_link string
+}
+
+type server_response struct {
+	Latest_version string
+
+}
+
 func fromjson(src string, v interface{}) error {
 	return json.Unmarshal([]byte(src), v)
 }
@@ -57,5 +69,5 @@ func main() {
 	ver.info()
 	link := fmt.Sprintf("%s://%s/%d_%d/latest/%s*", ver.Httptype, ver.Base_download, ver.Major, ver.Minor, ver.Name)
 	fmt.Println(link)
+	download(link, ver.Bin_location)
 }
-

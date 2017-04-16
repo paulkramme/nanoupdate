@@ -25,10 +25,6 @@ type latest_ver_srvr_resp struct {
 	Dl_link string
 }
 
-type server_response struct {
-	Latest_version string
-}
-
 func fromjson(src string, v interface{}) error {
 	return json.Unmarshal([]byte(src), v)
 }

@@ -7,6 +7,7 @@ import "io/ioutil"
 import "os"
 import "net/http"
 
+// version struct is used to hold information from json configuration files.
 type version struct {
 	Name          string
 	Major         int
@@ -18,17 +19,12 @@ type version struct {
 	Httptype      string
 }
 
-type latest_ver_srvr_resp struct {
-	Major   int
-	Minor   int
-	Patch   int
-	Dl_link string
-}
-
+// fromjson parses json from an string and returnes to an array.
 func fromjson(src string, v interface{}) error {
 	return json.Unmarshal([]byte(src), v)
 }
 
+// download downloads a file from a specific location URL "link" to a specific disk location "path".
 func download(link string, path string) (err error) {
 	out, err := os.Create(path)
 	if err != nil {
@@ -47,6 +43,7 @@ func download(link string, path string) (err error) {
 	return
 }
 
+// info prints information from the version struct.
 func (v version) info() {
 	fmt.Printf("Name: %s\nVersion: %d.%d.%d\nServer: %s\n", v.Name, v.Major, v.Minor, v.Patch, v.Base_download)
 }

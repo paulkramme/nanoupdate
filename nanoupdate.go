@@ -8,26 +8,25 @@ import "os"
 import "net/http"
 
 type version struct {
-	Name string
-	Major int
-	Minor int
-	Patch int
+	Name          string
+	Major         int
+	Minor         int
+	Patch         int
 	Base_download string
-	Bin_location string
+	Bin_location  string
 	Conf_location string
-	Httptype string
+	Httptype      string
 }
 
 type latest_ver_srvr_resp struct {
-	Major int
-	Minor int
-	Patch int
+	Major   int
+	Minor   int
+	Patch   int
 	Dl_link string
 }
 
 type server_response struct {
 	Latest_version string
-
 }
 
 func fromjson(src string, v interface{}) error {
@@ -35,17 +34,17 @@ func fromjson(src string, v interface{}) error {
 }
 
 func download(link string, path string) (err error) {
-	out,err := os.Create(path)
+	out, err := os.Create(path)
 	if err != nil {
 		return
 	}
 	defer out.Close()
-	resp,err := http.Get(link)
+	resp, err := http.Get(link)
 	if err != nil {
 		return
 	}
 	defer resp.Body.Close()
-	_,err = io.Copy(out, resp.Body)
+	_, err = io.Copy(out, resp.Body)
 	if err != nil {
 		return
 	}

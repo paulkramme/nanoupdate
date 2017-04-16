@@ -37,17 +37,17 @@ func fromjson(src string, v interface{}) error {
 func download(link string, path string) (err error) {
 	out,err := os.Create(path)
 	if err != nil {
-		panic(err)
+		return
 	}
 	defer out.Close()
 	resp,err := http.Get(link)
 	if err != nil {
-		panic(err)
+		return
 	}
 	defer resp.Body.Close()
 	_,err = io.Copy(out, resp.Body)
 	if err != nil {
-		panic(err)
+		return
 	}
 	return
 }
@@ -69,5 +69,13 @@ func main() {
 	ver.info()
 	link := fmt.Sprintf("%s://%s/%d_%d/latest/%s*", ver.Httptype, ver.Base_download, ver.Major, ver.Minor, ver.Name)
 	fmt.Println(link)
-	download(link, ver.Bin_location)
+	os.Rename(ver.Bin_location, fmt.Sprintf("%s_old", ver.Bin_location))
+	err = download(link, ver.Bin_location)
+	if err != nil {
+		fmt.Println("Download failed, more information in crash report.")
+		os.Rename(fmt.Sprintf("%s_old", ver.Bin_location), ver.Bin_location)
+		fmt.Println("Reverted old version. Crashing...")
+		panic(err)
+	}
+	os.Remove(fmt.Sprintf("%s_old", ver.Bin_location))
 }
